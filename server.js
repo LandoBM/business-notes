@@ -13,18 +13,22 @@ app.use(express.json())
 app.use(express.static('public'))
 
 // GET Fetch for notes.html
-app.get('/notes', (req, res) => {
-    res.sendFile(path.join(`${__dirname}/notes.html`))
-    // res.json(`${req.method} request received for notes.html`)
-})
+app.get('/', (req, res) => {
+    res.sendFile(path.join(`${__dirname}/public/notes.html`))
+    console.info(`${req.method} request received for notes.html`)
+})     
+
+
 
 app.get('/api/notes', (req,res) => {
     fs.readFile('./db/db.json', 'utf8', (err,data) => {
-    //   if (err) {
-    //     console.log(err)
-    //   } else {
-    //     res.json(data)
-    //   }
+      if (err) {
+        console.log(err)
+      } else {
+        // Added Const to make the data parsed when shown. 
+        const dataParse = JSON.parse(data)
+        res.json(dataParse)
+      }
     })
     console.info(`${req.method} request received to get notes html file`)
 })
